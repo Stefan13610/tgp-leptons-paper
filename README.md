@@ -1,11 +1,12 @@
 # Theory of Generated Space — Particle-sector closure (charged leptons)
 
-[![DOI](https://img.shields.io/badge/DOI-pending-lightgrey.svg)](#)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19706861.svg)](https://doi.org/10.5281/zenodo.19706861)
 
-This repository will accompany the preprint:
+This repository accompanies the preprint:
 
 > **Particle-sector closure: a TGP-structured derivation of charged-lepton masses, the Koide relation, and the Cabibbo angle**
-> M. Serafin, 2026. (in preparation — Zenodo DOI to be minted on release)
+> M. Serafin, 2026.
+> Zenodo DOI [10.5281/zenodo.19706861](https://doi.org/10.5281/zenodo.19706861).
 
 It is a companion to the TGP core paper:
 
@@ -48,8 +49,8 @@ $P_{\cos}$ in a basis larger than 30 polylog/Clausen constants.
 
 ```
 paper/
-  tgp_leptons.tex                — LaTeX source (TO WRITE)
-  tgp_leptons.pdf                — compiled preprint (after build)
+  tgp_leptons.tex                — LaTeX source
+  tgp_leptons.pdf                — compiled preprint
 
 research/                        — numerical support to be cited in the paper
   particle_sector_closure/       — ps1..ps4: α₃, g₀^τ, quark Koide, neutrino Koide
@@ -197,7 +198,12 @@ paper-aligned snapshot for the particle-sector closure only.
 
 ## Citation
 
-Citation keys will be finalised on release. Provisional BibTeX:
+Please cite both DOIs together:
+
+- **This repository (particle-sector closure):** [10.5281/zenodo.19706861](https://doi.org/10.5281/zenodo.19706861)
+- **Core paper:** [10.5281/zenodo.19670324](https://doi.org/10.5281/zenodo.19670324)
+
+BibTeX:
 
 ```bibtex
 @misc{Serafin2026TGPLeptons,
@@ -207,7 +213,8 @@ Citation keys will be finalised on release. Provisional BibTeX:
                    Cabibbo angle}},
   year         = {2026},
   publisher    = {Zenodo},
-  note         = {in preparation}
+  doi          = {10.5281/zenodo.19706861},
+  url          = {https://doi.org/10.5281/zenodo.19706861}
 }
 
 @misc{Serafin2026TGPCore,
@@ -220,6 +227,9 @@ Citation keys will be finalised on release. Provisional BibTeX:
   url          = {https://doi.org/10.5281/zenodo.19670324}
 }
 ```
+
+The `.zenodo.json` file contains the machine-readable metadata Zenodo
+uses on each release.
 
 ## License
 

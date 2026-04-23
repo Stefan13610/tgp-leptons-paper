@@ -34,6 +34,11 @@
       "resource_type": "publication-preprint"
     },
     {
+      "identifier": "10.5281/zenodo.19670557",
+      "relation": "isSupplementTo",
+      "resource_type": "publication-preprint"
+    },
+    {
       "identifier": "https://github.com/Stefan13610/tgp-core-paper",
       "relation": "isSupplementTo",
       "resource_type": "software"
@@ -41,7 +46,7 @@
     {
       "identifier": "https://github.com/Stefan13610/tgp-sc-paper",
       "relation": "isRelatedTo",
-      "resource_type": "publication-preprint"
+      "resource_type": "software"
     },
     {
       "identifier": "https://github.com/Stefan13610/TGP",

@@ -1,0 +1,109 @@
+==============================================================================
+  ps1_alpha3_hunting.py   (mpmath dps = 40)
+==============================================================================
+
+  Program P4, problem #1: closed form for alpha_3.
+  Known numerical value:  alpha_3 = 0.089722223674...   (from r6_c11)
+
+==============================================================================
+  Part A.  Compute P_cos via Phi_i Fubini swap (analytical backbone)
+==============================================================================
+  Computing A_1 (oscillatory quadrature at dps=40)...
+    A_1 = 0.07031453567973451819748103386244264   (43.7s)
+  Computing A_2...
+    A_2 = 0.029188150379926752469522813164064061   (42.8s)
+  Computing A_3...
+    A_3 = 0.0045485149651430772077793367650273251   (45.7s)
+  Computing A_4...
+    A_4 = -0.063075133162789613325068744782173771   (45.0s)
+
+  K_c^(I)   = (ln 2 - 1)/6  = -0.051142136573342448430461313090303905
+  K_c^(II)  = -A_1 - A_2 + A_3 - A_4 = -0.031879037931728580134155765479305605
+  P_cos     = K_c^(I) - 2*K_c^(II)   = 0.012615939290114711837850217868307305
+  alpha_2   = 1/2 - ln(3)/8          = 0.36267346391648628857559434538468429
+  alpha_3   = pi^2/128 + P_cos       = 0.089722223673625326047494678804839735
+
+  pi^2/110              = 0.089723676373539623807586281817055919
+  diff (alpha_3 - pi^2/110) = -1.4526999e-6
+  ^^^ non-zero; confirms pi^2/110 is ruled out.
+
+==============================================================================
+  Part B.  Build expanded basis of ~30 constants
+==============================================================================
+  Basis size: 22 constants
+    pi^2                 = 9.869604401089358618834491
+    pi^4                 = 97.40909103400243723644033
+    ln^2(2)              = 0.4804530139182014246671025
+    ln^2(3)              = 1.206948960812581977843779
+    ln(2)*ln(3)          = 0.7615000104188089864291227
+    pi^2*ln(2)           = 6.841088463857116544847479
+    pi^2*ln(3)           = 10.84286867932962831529525
+    chi_2(1/3)           = 0.3376231782324359799668897
+    chi_2(1/5)           = 0.2009019566086201958240491
+    Cl_2(pi/3)           = 1.014941606409653625021203
+    Cl_2(2pi/3)          = 0.676627737606435750014135
+    Cl_2(pi/6)           = 0.8643791310538927496250363
+    Li_2(1/3)            = 0.3662132299770634876167463
+    Li_2(2/3)            = 0.8332718864773899574410125
+    Li_2(1/4)            = 0.2676526390827326069191838
+    Li_2(3/4)            = 0.9784693929303061037430667
+    Li_2(-1/3)           = -0.309033126487808472317033
+    Li_3(1/3)            = 0.3488278611548400842142519
+    Li_3(1/2)            = 0.5372131936080402009406232
+    Li_3(2/3)            = 0.7380606448308579106637761
+    zeta(3)              = 1.202056903159594285399738
+    Catalan G            = 0.9159655941772190150546035
+
+==============================================================================
+  Part C.  Targeted 2-term sweep:   alpha_3 = a/b * X  for simple (a,b,X)
+==============================================================================
+  No 2-term rational-coefficient match found.  [EXPECTED: pi^2/110 ruled out.]
+
+==============================================================================
+  Part D.  Targeted 3-term:   alpha_3 = (p/q)*pi^2 + (r/s)*X
+==============================================================================
+  Fixing the pi^2/128 part and hunting for P_cos closed form...
+  Target for P_cos = 0.012615939290114711837850217868307305
+
+  No 3-term (simple rational * single constant) match for P_cos.
+
+==============================================================================
+  Part E.  Full PSLQ linear integer relation search
+==============================================================================
+  Search:   integers a_0,...,a_n such that  a_0*alpha_3 + sum a_i*X_i = 0
+  Expanded basis used in PSLQ:
+  PSLQ vector length: 24
+  max_coef =    100000000   no relation found   (0.1s)
+  max_coef =  10000000000   no relation found   (0.1s)
+  max_coef = 1000000000000   no relation found   (0.1s)
+  max_coef = 100000000000000   no relation found   (0.1s)
+
+==============================================================================
+  Part F.  Verdict
+==============================================================================
+  STATUS:  No linear integer relation in basis of size 24 at max_coef=1e14.
+
+  INTERPRETATION:
+    alpha_3 is either:
+      (i)   a genuinely new transcendental constant specific to
+            the TGP substrate ODE (a 'TGP constant'), or
+      (ii)  expressible in a basis larger than 30 ordinary
+            polylog / Clausen constants.
+
+  RECOMMENDATION:
+    * Accept alpha_3 = pi^2/128 + P_cos as the STRUCTURAL FORM.
+      - pi^2/128 is PROVEN (I_sin^2/2).
+      - P_cos = (ln 2 - 1)/6 - 2 K_c^(II) is the remaining primitive.
+      - K_c^(II) is a double integral over j_0 with analytic Phi_i
+        kernels; its closed form (if any) would be a new identity.
+    * Promote P_cos to a named TGP constant:
+        TGP_Pcos = 0.012615939290114711837850217868307305
+      until further analytical progress resolves it.
+
+  ps1 CLOSED with status: 'pi^2/128 + P_cos decomposition is the
+       structural closure; P_cos transcendence in basis of 30
+       polylog constants is the residual open primitive'.
+
+==============================================================================
+  ps1 complete.
+==============================================================================

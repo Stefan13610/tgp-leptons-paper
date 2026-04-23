@@ -1,0 +1,52 @@
+{
+  "title": "Theory of Generated Space — Particle-sector closure: a TGP-structured derivation of charged-lepton masses, the Koide relation, and the Cabibbo angle",
+  "description": "<p>Preprint and supporting numerical material for the TGP particle-sector closure paper, a companion to the TGP core paper (Zenodo DOI: 10.5281/zenodo.19670324). Starting from the substrate-field framework fixed by the core paper, we derive, from the same soliton ODE: (i) the charged-lepton mass law m_n = c_M &middot; A_tail,n^4, with m_&mu;/m_e = 206.74 vs PDG 206.768 (0.013%); (ii) the Koide relation K = 2/3 as a theorem of the Brannen ratio B = b/a = &radic;2; (iii) the integer N = 3 generation count from a metric-singularity barrier g0_crit = 2.206 with g0^&tau; safely inside the well; (iv) the Cabibbo angle &lambda;_C via a Z&#x2083; self-energy subtraction on GL(3,&#x1D53D;&#x2082;), reducing PDG tension from 4.8&sigma; to 0.75&sigma;. The perturbative coefficient &alpha;_3 = &pi;&sup2;/128 + P_cos is decomposed, with P_cos = 0.0126159&hellip; shown at 40-digit precision to have no relation to any 24-element polylog/Clausen basis at max-coef 10^14; it is promoted to a TGP-named constant. Quark Koide is shown to be RG-invariant under 2-loop QCD &gamma;_m with K_u = 0.8746 and K_d = 0.7398, and the neutrino Brannen-&radic;2 ansatz is falsified by &Delta;m&sup2; oscillation data (max K_&nu; = 0.553 in NO), establishing that Koide K = 2/3 is a charged-lepton signature of the soliton ODE, not a universal law. The repository contains the paper source, compiled PDF, and the numerical folders that are directly cited: particle_sector_closure/, brannen_sqrt2/, why_n3/, mass_scaling_k4/, cabibbo_correction/, and neutrino_msw/.</p>",
+  "creators": [
+    {
+      "name": "Serafin, Mateusz",
+      "affiliation": "Independent researcher"
+    }
+  ],
+  "keywords": [
+    "charged leptons",
+    "Koide relation",
+    "Cabibbo angle",
+    "lepton mass formula",
+    "soliton",
+    "generated space",
+    "TGP",
+    "scalar field",
+    "Brannen",
+    "GL(3,F2)",
+    "neutrino mass",
+    "PSLQ",
+    "theoretical physics"
+  ],
+  "license": "CC-BY-4.0",
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "access_right": "open",
+  "language": "eng",
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.19670324",
+      "relation": "isSupplementTo",
+      "resource_type": "publication-preprint"
+    },
+    {
+      "identifier": "https://github.com/Stefan13610/tgp-core-paper",
+      "relation": "isSupplementTo",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://github.com/Stefan13610/tgp-sc-paper",
+      "relation": "isRelatedTo",
+      "resource_type": "publication-preprint"
+    },
+    {
+      "identifier": "https://github.com/Stefan13610/TGP",
+      "relation": "isSupplementedBy",
+      "resource_type": "software"
+    }
+  ]
+}

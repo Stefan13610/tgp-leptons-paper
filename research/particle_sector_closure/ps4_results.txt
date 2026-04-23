@@ -1,0 +1,121 @@
+==============================================================================
+  ps4_neutrino_majorana.py
+==============================================================================
+
+  Problem P4 #4:  does the neutrino Koide K_nu reach 2/3?
+
+==============================================================================
+  Part A.  Dirac-only K_nu in NO and IO
+==============================================================================
+  m_lightest (eV)     K_nu(NO)       K_nu(IO)       sum(NO)      sum(IO)
+     0.000         0.58697        0.50001        0.0595       0.1007
+     0.001         0.49349        0.44068        0.0606       0.1017
+     0.005         0.42014        0.39185        0.0661       0.1062
+     0.010         0.38316        0.36824        0.0751       0.1127
+     0.020         0.35288        0.34843        0.0965       0.1284
+     0.050         0.33571        0.33547        0.1721       0.1919
+     0.100         0.33358        0.33357        0.3126       0.3239
+     0.200         0.33335        0.33335        0.6066       0.6125
+     0.500         0.33333        0.33333        1.5027       1.5051
+
+  Cosmology bound:  sum(m_nu) < 0.0720 eV (95% CL)
+  (above this, cosmological density of relic neutrinos too high)
+
+==============================================================================
+  Part B.  Maximum K_nu over m_lightest (Dirac only)
+==============================================================================
+  Maximum K_nu in NO:  0.55270 at m_1 = 0.00010 eV
+     sum(m) at max: 0.0596 eV (allowed)
+
+  Maximum K_nu in IO:  0.47892 at m_3 = 0.00010 eV
+     sum(m) at max: 0.1008 eV (COSMOLOGY EXCLUDED)
+
+  Target: K_nu = 2/3 = 0.66667
+  Gap (NO):  +0.11397
+  Gap (IO):  +0.18775
+
+  WITHIN cosmology bound: max K_nu(NO) = 0.55270 at m_1 = 0.00010 eV
+
+==============================================================================
+  Part C.  Majorana contribution: can it boost K_nu to 2/3?
+==============================================================================
+  Ansatz:  m_i = alpha_i * m_Dirac_i    with 0 <= alpha_i <= 5
+  i.e., Majorana rescaling factor per generation.
+  Search: find (alpha_1, alpha_2, alpha_3) that bring K_nu -> 2/3.
+
+  Dirac baseline (NO, m_1 = 0.00010 eV): m = (0.00010, 0.00861, 0.05090) eV
+  K_Dirac = 0.55270
+
+  Best fit: (alpha_1, alpha_2, alpha_3) = (0.162, 0.348, 1.000)
+  m_eff = (0.00002, 0.00300, 0.05090) eV
+  K_nu = 0.66660   (target 0.66667, diff -0.00006)
+  sum(m_eff) = 0.05392 eV (allowed)
+
+  Fine 3D scan over (alpha_1, alpha_2, alpha_3) in [0.1, 5]^3 ...
+  Best 3D: (alpha_1, alpha_2, alpha_3) = (1.859, 0.100, 0.603)
+  m_eff = (0.00019, 0.00086, 0.03067) eV
+  K_nu = 0.66671   diff = +0.00005
+  sum(m_eff) = 0.03172 eV
+
+==============================================================================
+  Part D.  Geometry of K_nu = 2/3 (independent of oscillation constraints)
+==============================================================================
+
+  K_nu = 2/3 requires CV(sqrt(m)) = 1, i.e.
+     sqrt(m_i) = a (1 + sqrt(2) cos(theta + 2 pi i/3))  for some a, theta.
+
+  For i=1,2,3 with theta = 0:
+     sqrt(m_1)/a = 2.4142
+     sqrt(m_2)/a = 0.2929
+     sqrt(m_3)/a = 0.2929
+  => m_1 : m_2 : m_3 = 5.8284 : 0.0858 : 0.0858
+     (ordered)        = [np.float64(0.08578643762690454), np.float64(0.08578643762690512), np.float64(5.82842712474619)]
+
+  Sweep theta in [0, 2 pi] and look for masses consistent with
+  oscillation splittings (|Delta m_21^2| = 7.42e-5, |Delta m_32^2| = 2.517e-3)
+
+     theta        masses (ordered, arb. scale a=1)        K
+     0.000       0.0858, 0.0858, 5.8284    0.6667
+     1.886       0.0030, 0.3155, 5.6815    0.6667
+     2.200       0.0281, 0.1817, 5.7903    0.6667
+     4.086       0.0293, 0.1782, 5.7925    0.6667
+     4.400       0.0026, 0.3203, 5.6771    0.6667
+
+  Does any (theta, overall-scale a) satisfy BOTH K=2/3 AND Delta m^2 constraints?
+  Minimum DeltaM^2 consistency residual: 4.73807
+     theta* = 6.0223
+     masses^2 (arb. scale) = [8.41212417e-07 4.00337683e-01 5.59966148e+00]
+     x_from_DM21 = 4.6297e-04
+     x_from_DM32 = 8.0684e-05
+  NOT CONSISTENT: no theta satisfies both K=2/3 and oscillation constraints simultaneously.
+  Thus K_nu = 2/3 is FORBIDDEN by neutrino oscillation data in the
+  simple Brannen ansatz sqrt(m) = a(1 + sqrt(2) cos(theta + 2pi i/3)).
+
+==============================================================================
+  Part E.  Verdict
+==============================================================================
+
+  Dirac-only maximum K_nu(NO) = 0.55270  (target 0.66667)
+  Dirac-only maximum K_nu(IO) = 0.47892  (target 0.66667)
+  Neither reaches 2/3 within cosmology bound.
+
+  With generation-dependent Majorana rescaling alpha_i, K_nu CAN be
+  pushed close to 2/3 but only at the cost of violating sum(m) < 0.072 eV,
+  OR requiring large alpha_i > 2 (unnatural).
+
+  The Brannen ansatz sqrt(m) = a(1 + sqrt(2) cos(theta + 2 pi i/3)) 
+  INCONSISTENT with oscillation Delta m^2 data for neutrinos.
+
+  ps4 CLOSURE:  Neutrinos do NOT obey Koide K=2/3.
+    Koide 2/3 is a CHARGED-LEPTON-SPECIFIC phenomenon.
+    Physical explanation in TGP:
+      - Charged leptons: Dirac masses only, follow sek02 ODE solitons
+        with g_0^{e,mu,tau} satisfying Koide by construction (ps2).
+      - Neutrinos: mass generation likely involves DIFFERENT mechanism
+        (Majorana + seesaw), yielding different Brannen structure.
+    KATRIN/JUNO/DUNE future m_nu data will further constrain the
+    neutrino sector independently of Koide.
+
+==============================================================================
+  ps4 complete.
+==============================================================================

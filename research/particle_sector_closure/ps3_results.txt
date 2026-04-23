@@ -1,0 +1,132 @@
+==============================================================================
+  ps3_quark_koide_qcd.py
+==============================================================================
+
+  Problem P4 #3:  do quark Koide relations -> 2/3 with 2-loop QCD running?
+
+==============================================================================
+  Part A.  PDG 2024 quark masses and their reporting scales
+==============================================================================
+  Flavor    mass (MeV)         scale (MeV)
+     u            2.16           2000.0
+     d            4.70           2000.0
+     s           93.50           2000.0
+     c         1273.00           1273.0
+     b         4183.00           4183.0
+     t       162500.00         162500.0
+
+==============================================================================
+  Part B.  alpha_s(mu) 2-loop RG
+==============================================================================
+  mu (MeV)       alpha_s(mu)       n_f
+        91187.6      0.11790          5
+       162500.0      0.11299          6
+         4183.0      0.15385          5
+         1273.0      0.17707          4
+         2000.0      0.16744          4
+         1000.0      0.18325          3
+          300.0      0.22240          3
+
+==============================================================================
+  Part C.  2-loop mass anomalous dim & running
+==============================================================================
+  mu =     1000.0 MeV   m_u=2.371  m_d=5.159  m_s=102.63  m_c=1316.6  m_b=5020.8  m_t=277084.5
+  mu =     2000.0 MeV   m_u=2.160  m_d=4.700  m_s=93.50  m_c=1199.6  m_b=4574.3  m_t=252446.2
+  mu =    10000.0 MeV   m_u=1.796  m_d=3.907  m_s=77.72  m_c=997.1  m_b=3802.5  m_t=209849.2
+  mu =    91187.6 MeV   m_u=1.459  m_d=3.174  m_s=63.14  m_c=810.1  m_b=3089.1  m_t=170478.1
+  mu =  1000000.0 MeV   m_u=1.211  m_d=2.636  m_s=52.44  m_c=672.8  m_b=2565.6  m_t=141591.0
+
+==============================================================================
+  Part D.  Koide K for quarks at common mu
+==============================================================================
+  mu (MeV)           K_up        K_down      |K_up-2/3|   |K_down-2/3|
+          100.0      0.87456     0.73983     0.20789     0.07316
+          177.8      0.87456     0.73983     0.20789     0.07316
+          316.2      0.87456     0.73983     0.20789     0.07316
+          562.3      0.87456     0.73983     0.20789     0.07316
+         1000.0      0.87456     0.73983     0.20789     0.07316
+         1000.0      0.87456     0.73983     0.20789     0.07316
+         1389.5      0.87456     0.73983     0.20789     0.07316
+         1930.7      0.87456     0.73983     0.20789     0.07316
+         2682.7      0.87456     0.73983     0.20789     0.07316
+         3727.6      0.87456     0.73983     0.20789     0.07316
+         5179.5      0.87456     0.73983     0.20789     0.07316
+         7196.9      0.87456     0.73983     0.20789     0.07316
+        10000.0      0.87456     0.73983     0.20789     0.07316
+        10000.0      0.87456     0.73983     0.20789     0.07316
+        25118.9      0.87456     0.73983     0.20789     0.07316
+        63095.7      0.87456     0.73983     0.20789     0.07316
+       158489.3      0.87456     0.73983     0.20789     0.07316
+       398107.2      0.87456     0.73983     0.20789     0.07316
+      1000000.0      0.87456     0.73983     0.20789     0.07316
+
+==============================================================================
+  Part E.  Does K_up(mu) or K_down(mu) cross 2/3?
+==============================================================================
+  K_up range over mu ∈ [50 MeV, 100 TeV]:  min=0.87456, max=0.87456
+  K_down range over mu ∈ [50 MeV, 100 TeV]: min=0.73983, max=0.73983
+
+  K_up(MZ)   = 0.874557
+  K_down(MZ) = 0.739830
+  K_lepton   = 0.666661  (PDG)   target K = 2/3 = 0.666667
+  K_up does NOT reach 2/3 (min 0.8746, max 0.8746)
+  K_down does NOT reach 2/3 (min 0.7398, max 0.7398)
+
+==============================================================================
+  Part F.  Structural analysis: K is *almost* RG-invariant under QCD
+==============================================================================
+
+  Reason:  QCD gamma_m is FLAVOR-BLIND at leading order.
+  ALL six quarks run with the SAME multiplicative factor R(mu).
+  Then:  K(mu) = sum_i m_i(mu) / (sum_i sqrt(m_i(mu)))^2
+              = R * sum_i m_i  /  (sqrt(R) * sum_i sqrt(m_i))^2
+              = R * sum_i m_i  /  (R * (sum_i sqrt(m_i))^2)
+              = sum_i m_i / (sum_i sqrt(m_i))^2
+              = K(mu_0)                  [R cancels]
+
+  The residual mu-dependence comes from:
+    (i)   n_f thresholds (only 3-6 active flavors at different mu)
+    (ii)  higher-order QCD corrections (beyond 1-loop mass anom dim)
+    (iii) BUT these are TINY: O(alpha_s^2) ~ 10^-3 relative shift.
+
+  CONSEQUENCE:  No QCD running will take K_up=0.86 or K_down=0.73 -> 2/3.
+  The lepton Koide K=2/3 is SPECIAL; quarks do NOT obey it.
+
+==============================================================================
+  Part G.  Joint K_up+K_down: does combined scan come close?
+==============================================================================
+  Minimum of joint ||K_up-2/3||^2 + ||K_down-2/3||^2:
+     mu* = 50.00 MeV
+     K_up(mu*)   = 0.87456   diff = +0.2079
+     K_down(mu*) = 0.73983   diff = +0.0732
+
+  Joint residual = sqrt(obj) = 0.22039
+  Comparison: K_lepton - 2/3 = 5.67e-06
+  Quarks miss 2/3 by 3.9e+04x
+  more than leptons.  Koide is NOT universal across sectors.
+
+==============================================================================
+  Part H.  Verdict
+==============================================================================
+
+  RESULT:
+    * QCD 2-loop running does NOT move quark Koide K toward 2/3.
+    * K_up ~ 0.86 and K_down ~ 0.73 are ESSENTIALLY RG-INVARIANT.
+    * Reason: gamma_m is flavor-blind => common factor cancels in K.
+
+  IMPLICATION FOR TGP:
+    Koide K=2/3 is a LEPTON-SPECIFIC constraint, NOT universal.
+    Consistent with TGP's phi-ladder + A^4 mass formula:
+      The substrate ODE (alpha=1, d=3) selects g_0^e, g_0^mu, g_0^tau
+      such that (A_mu/A_e, A_tau/A_e) give K=2/3 (see ps2 result).
+    Quarks carry additional QCD color dynamics that modify the A^4 law
+    (e.g., through dynamical chiral symmetry breaking contributions).
+
+  ps3 CLOSURE:  Koide K=2/3 is RESERVED for the charged-lepton sector.
+    The quark sector requires a different mass-ratio structure,
+    compatible with TGP's general m = c K^2 formula but with
+    QCD-induced flavor-dependent corrections.
+
+==============================================================================
+  ps3 complete.
+==============================================================================

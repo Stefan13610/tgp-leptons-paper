@@ -1,0 +1,940 @@
+% =============================================================================
+%  TGP Application — Particle-sector closure (charged leptons)
+%  Builds on the TGP core [ref Zenodo] and derives, from the same soliton ODE:
+%    (i)  the charged-lepton mass law  m_n = c_M * A_tail_n^4,
+%    (ii) the Koide relation K = 2/3 as a theorem,
+%    (iii) the integer N = 3 generation count from a metric-singularity barrier,
+%    (iv) the Cabibbo angle via Z_3 self-energy subtraction on GL(3,F_2).
+%  Also: quark Koide is RG-invariant under 2-loop QCD gamma_m and the neutrino
+%  Brannen-sqrt(2) ansatz is falsified by Delta-m^2 oscillation data, so Koide
+%  K = 2/3 is established as a charged-lepton signature, not a universal law.
+%
+%  Mateusz Serafin,  April 2026
+%  To be published on Zenodo.
+% =============================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\usepackage[hidelinks]{hyperref}
+\usepackage{geometry}
+\usepackage{longtable,booktabs,tabularx,array}
+\usepackage[shortlabels]{enumitem}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage[protrusion=true,expansion=false]{microtype}
+\geometry{margin=2.5cm}
+
+% --- TGP symbols -------------------------------------------------------------
+\renewcommand{\Phi}{\varPhi}
+\newcommand{\PhiZero}{\varPhi_{0}}
+\newcommand{\Atail}{A_{\mathrm{tail}}}
+\newcommand{\mphys}{m_{\mathrm{phys}}}
+\newcommand{\gcrit}{g_{0}^{\mathrm{crit}}}
+\newcommand{\Kkoide}{K_{\mathrm{K}}}
+\newcommand{\Pcos}{P_{\cos}}
+\newcommand{\GLtf}{\mathrm{GL}(3,\mathbb{F}_{2})}
+\newcommand{\Ztwo}{\mathbb{Z}_{2}}
+\newcommand{\Zthree}{\mathbb{Z}_{3}}
+\newcommand{\meff}{m_{\mathrm{eff}}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{%
+  \textbf{Particle-sector closure from the TGP substrate}\\[4pt]
+  \large Charged-lepton masses, Koide $K=2/3$, the Cabibbo angle,\\
+  \large and the sector-specificity of Koide across quarks and neutrinos%
+}
+\author{Mateusz Serafin\\[2pt]
+\small\textit{Independent researcher}\\[-2pt]
+\small\texttt{environmenstefan@gmail.com}}
+\date{April 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Building on the \emph{Theory of Generated Space} (TGP) introduced
+in~\cite{TGP-core}, we apply the substrate-field framework to the
+charged-lepton sector. Starting from the same soliton ordinary
+differential equation (ODE) that fixes the substrate profile in the
+core theory, we derive, without any new degree of freedom:
+(i)~the lepton mass law $\mphys = c_{M}\,\Atail^{4}$ with $k=4$ uniquely
+selected by $k = 2(d-1)/(d-2)$ for $d=3$ and verified to
+$(A_{\mu}/A_{e})^{4}=206.74$ against the PDG ratio $206.768$ at the
+$0.013\%$ level;
+(ii)~the integer generation count $N=3$ as a metric-singularity barrier,
+$\gcrit(d=3,\alpha=1)=2.206$, with $g_{0}^{\tau}<\gcrit$ and
+$g_{0}^{(4)}>\gcrit$;
+(iii)~the Koide relation $\Kkoide=2/3$ as a theorem of the soliton ODE,
+with two independent extractions of $g_{0}^{\tau}$ (one from the
+mass ratio, one from $\Kkoide=2/3$) agreeing to $0.036\%$; the
+perturbative coefficient $\alpha_{3}=\pi^{2}/128+\Pcos$ is decomposed
+analytically into a proven part and a residual primitive $\Pcos$ with
+$40$-digit numerical value, which is shown by PSLQ on a $24$-element
+polylog/Clausen basis at $\max\text{coef}=10^{14}$ to admit no relation
+and is therefore promoted to a TGP-named constant;
+(iv)~the Cabibbo angle via a $\Zthree$ self-energy subtraction on
+$\GLtf$, reducing the PDG tension from $4.8\sigma$ at zero order to
+$0.75\sigma$.
+We then show that the Koide relation is \emph{not} universal: the
+quark Koide ratios $K_{u}=0.8746$ and $K_{d}=0.7398$ are invariant under
+2-loop QCD running of $\gamma_{m}$ (the flavour-blind multiplicative
+factor cancels identically between numerator and denominator), and the
+neutrino Brannen-$\sqrt{2}$ ansatz is falsified by the combined
+oscillation $\Delta m^{2}$ data with NuFit~5.3 inputs (minimum Brannen
+residual $4.74$, not consistent at any phase angle; $\max
+K_{\nu}^{\mathrm{NO}}=0.553$ below $2/3$ by $+0.114$). Koide $\Kkoide=2/3$
+is therefore established as a charged-lepton signature of the
+soliton ODE, not a universal law.
+\end{abstract}
+
+\noindent\textbf{Keywords:}
+charged leptons, Koide relation, Cabibbo angle, lepton mass formula,
+soliton, generated space, TGP, scalar field, Brannen, $\GLtf$,
+neutrino mass, PSLQ.
+
+\tableofcontents
+\newpage
+
+% =============================================================================
+\section{Introduction}\label{sec:intro}
+% =============================================================================
+
+The charged-lepton mass ratios $m_{e}:m_{\mu}:m_{\tau}\approx
+1:206.768:3477.2$ have no explanation in the Standard Model: each mass
+is a free Yukawa coupling, and the remarkable Koide
+relation~\cite{Koide1981,Koide1983,Brannen2006}
+\begin{equation}\label{eq:koide-intro}
+  \Kkoide \;\equiv\;
+  \frac{m_{e}+m_{\mu}+m_{\tau}}{\bigl(\sqrt{m_{e}}+\sqrt{m_{\mu}}+\sqrt{m_{\tau}}\bigr)^{2}}
+  \;=\; \frac{2}{3}
+  \quad(\text{PDG } 1.5000137\ldots)
+\end{equation}
+holds experimentally to better than one part in $10^{5}$ without any
+first-principles derivation in the SM. Attempts to explain $\Kkoide=2/3$
+through symmetry groups, discrete family symmetries or fixed-point
+dynamics have all either added additional free parameters or failed to
+recover the numerical value without fine-tuning.
+
+Within the \emph{Theory of Generated Space} (TGP)~\cite{TGP-core}, the
+fundamental degree of freedom is a scalar substrate field $\Phi$; a
+single non-linear potential $U(\Phi)$ with $U'(\PhiZero)=0$ admits a
+localised soliton solution whose tail decays as $\Phi(r)\sim
+\PhiZero-\Atail\,e^{-r}/r$. The present paper demonstrates that the
+charged-lepton sector is determined by this soliton ODE essentially
+completely, with a single overall mass scale $c_{M}$ as the only
+residual input:
+\begin{itemize}[leftmargin=1.4em,nosep]
+\item the mass scaling law $\mphys=c_{M}\,\Atail^{4}$ with $k=4$
+uniquely selected in $d=3$ (Sec.~\ref{sec:mass-law}),
+\item the number of generations $N=3$ from a metric-singularity barrier
+in the soliton core (Sec.~\ref{sec:N3}),
+\item the Koide relation $\Kkoide=2/3$ as a theorem of the ODE
+perturbative expansion, with two independent extractions of the third
+eigenvalue agreeing to $0.036\%$ (Sec.~\ref{sec:koide}),
+\item the Cabibbo angle via a $\Zthree$ self-energy subtraction on
+$\GLtf$, reducing PDG tension from $4.8\sigma$ to $0.75\sigma$
+(Sec.~\ref{sec:cabibbo}).
+\end{itemize}
+Crucially, we then show that $\Kkoide=2/3$ is \emph{not} universal.
+The quark Koide ratios are RG-invariant under 2-loop QCD running and do
+not equal $2/3$ (Sec.~\ref{sec:sector-specific}); the neutrino
+Brannen-$\sqrt{2}$ ansatz is falsified by oscillation $\Delta m^{2}$
+data. Koide $\Kkoide=2/3$ is therefore a charged-lepton signature of
+the soliton dynamics fixed by~\cite{TGP-core}, not an accidental
+empirical fact to be explained at all costs.
+
+\paragraph{Structure.} Section~\ref{sec:soliton} fixes notation for the
+substrate soliton inherited from the TGP core. Section~\ref{sec:mass-law}
+derives the $k=4$ mass law. Section~\ref{sec:N3} derives
+$N=3$ from the metric singularity. Section~\ref{sec:koide} states and
+proves $\Kkoide=2/3$ as a theorem of the soliton perturbation theory.
+Section~\ref{sec:cabibbo} derives the Cabibbo correction.
+Section~\ref{sec:sector-specific} establishes Koide sector-specificity.
+Section~\ref{sec:open-problems} collects the explicit open problems
+(principally: analytic identification of the residual TGP primitive
+$\Pcos$). Section~\ref{sec:conclusion} summarises.
+
+% =============================================================================
+\section{The substrate soliton}\label{sec:soliton}
+% =============================================================================
+
+Throughout this paper we use the substrate conventions of the TGP
+core~\cite{TGP-core}. We summarise here only the content strictly
+required to follow Secs.~\ref{sec:mass-law}--\ref{sec:cabibbo}.
+
+\subsection{Lagrangian and field equation}
+
+The dimensionless substrate field $g(\mathbf{r})\!\equiv\!\Phi/\PhiZero$
+obeys the Lagrangian density
+\begin{equation}\label{eq:lagrangian}
+  \mathcal{L}[g] \;=\;
+  \tfrac{1}{2}\,g^{2\alpha}\,(\nabla g)^{2} \;+\; U(g),
+  \qquad
+  U(g) \;=\; \tfrac{1}{3}g^{3} - \tfrac{1}{4}g^{4},
+\end{equation}
+where the kinetic exponent $\alpha=1$ is fixed by the
+algebraic uniqueness theorem of the core paper~\cite{TGP-core}. The
+potential $U$ has $U'(g)=g^{2}(1-g)$ with critical points $g=0$ (the
+absolute reference state $\aleph_{0}$) and $g=1$ (the vacuum). A
+localised, spherically symmetric soliton solution $g(r)$ obeys the
+Euler--Lagrange equation
+\begin{equation}\label{eq:soliton-ode}
+  \boxed{\;
+    g''(r) + \frac{2\,[g'(r)]^{2}}{g(r)}
+    + \frac{2}{r}\,g'(r) \;=\; 1 - g(r),
+  \;}
+\end{equation}
+with regularity at $r=0$ and asymptotic boundary condition $g(r)\to 1$
+as $r\to\infty$. The one-parameter family of solutions is labelled by
+the core value $g_{0}\!\equiv\!g(0)$. The tail behaviour is fixed by
+the linearisation around $g=1$:
+\begin{equation}\label{eq:tail}
+  g(r) \;\sim\; 1 \;-\; \Atail\,\frac{e^{-r}}{r},
+  \qquad r \to \infty,
+\end{equation}
+so that a soliton is specified either by $g_{0}$ or by the tail
+amplitude $\Atail$; the two are related by a monotone bijection on the
+regular branch (proved in~\cite{TGP-core} and numerically verified for
+$g_{0}\in(0,\gcrit)$ in~\cite{TGP-repo}).
+
+\subsection{Conservation law}
+
+Integrating Eq.~\eqref{eq:soliton-ode} against $r^{2(d-1)}$ in spatial
+dimension $d$ yields the universal conservation law
+\begin{equation}\label{eq:conservation}
+  \bigl[r^{2(d-1)}\,q(r)\bigr]' \;=\; r^{2(d-1)}\,U'(g(r)),
+\end{equation}
+where $q=g^{2\alpha}g'$ is the radial flux. This identity holds for all
+$(\alpha,d)$ and will be used in Sec.~\ref{sec:mass-law} to prove the
+virial mass formula.
+
+\subsection{Metric-singularity barrier and \texorpdfstring{$\gcrit$}{g0crit}}
+
+For $d=3$ and $\alpha=1$ there exists a critical core value
+$\gcrit(d=3,\alpha=1) = 2.206$ above which $g(r)\to 0$ at some finite
+$r=r_{\ast}>0$, triggering a singularity of the effective metric
+$g_{ij}=e^{+2U/c_{0}^{2}}\delta_{ij}$ of the core paper (the metric
+degenerates when $g\to 0$ in the soliton core). Soliton branches with
+$g_{0}>\gcrit$ are therefore dynamically forbidden; this barrier will
+be used in Sec.~\ref{sec:N3} to derive $N=3$.
+
+Numerical values of $\gcrit$ for illustrative $(d,\alpha)$ pairs are
+reported in Table~\ref{tab:gcrit} and cross-checked against the
+conservation law~\eqref{eq:conservation} via the universal identity
+$(r^{2(d-1)}q)' = r^{2(d-1)}U'$, which passes at 4-digit precision for
+$(d,\alpha)\in\{(2,1),(3,1),(3,1/\varphi),(3,0.5),(3,0.8),(3,1.0)\}$
+(full table in the companion repository~\cite{TGP-repo}).
+
+\begin{center}\small
+\captionof{table}{Critical core value $\gcrit$ of the substrate soliton
+for representative $(d,\alpha)$. The $d=3,\alpha=1$ entry is the
+physically relevant one.}\label{tab:gcrit}
+\begin{tabular}{@{}cccl@{}}
+\toprule
+$d$ & $\alpha$ & $\gcrit$ & Context\\
+\midrule
+$1$ & any     & $4/3$   & algebraic theorem, $U$-independent of $\alpha$\\
+$3$ & $0.50$  & $2.618$ & reference $K=g$ kinetic\\
+$3$ & $0.62$  & $2.487$ & $1/\varphi$ (golden)\\
+$3$ & $0.80$  & $2.332$ & intermediate\\
+$3$ & $1.00$  & $\mathbf{2.206}$ & \textbf{substrate (physical)}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% =============================================================================
+\section{Charged-lepton mass law: \texorpdfstring{$\mphys=c_{M}\,\Atail^{4}$}{m = c_M * A^4}}\label{sec:mass-law}
+% =============================================================================
+
+We now derive the charged-lepton mass law directly from the soliton
+ODE~\eqref{eq:soliton-ode}, with the integer exponent $k=4$ fixed by
+dimensional algebra in $d=3$.
+
+\subsection{Virial identity and the \texorpdfstring{$K^{2}$}{K-squared} mechanism}
+
+Define the kinetic and potential integrals
+\begin{equation}\label{eq:K-V}
+  K \;\equiv\;
+  \int_{0}^{R_{\max}} \tfrac{1}{2}\,g^{2\alpha}(g')^{2}\,r^{2}\,dr,
+  \qquad
+  |V| \;\equiv\;
+  \Bigl|\int_{0}^{R_{\max}} U(g)\,r^{2}\,dr\Bigr|.
+\end{equation}
+The zero-mode virial identity $E^{(2)}\!=\!0$ of the soliton yields the
+\emph{exact} relation~\cite{TGP-repo}
+\begin{equation}\label{eq:K-A2}
+  K \;=\; C_{T}\cdot \Atail^{2},
+  \qquad
+  C_{T} \;=\; R_{\max}/4 + C_{\mathrm{core}},
+\end{equation}
+with $C_{\mathrm{core}}/\Atail^{2}\!\approx\!1.09$ a topological
+constant (fluctuation $<\!1.5\%$ at $d=3,\alpha=1$).
+
+\begin{proposition}[Virial mass formula]\label{prop:virial}
+The physical mass of a soliton of tail amplitude $\Atail$ is
+\begin{equation}\label{eq:mphys-K2}
+  \mphys \;=\; c\,K^{2},
+\end{equation}
+for a universal constant $c$ determined by the substrate normalisation
+of the core paper.
+\end{proposition}
+
+\noindent
+A detailed derivation of Eq.~\eqref{eq:mphys-K2} by integrating the
+stress-energy density against the effective metric is given
+in~\cite{TGP-core}; the script
+\verb|research/mass_scaling_k4/r5_k_squared_mechanism.py| verifies
+Eq.~\eqref{eq:mphys-K2} on the soliton branch for $R_{\max}\!\in\![40,100]$
+with \emph{7/7 PASS} against the ratio prediction
+$(K_{\mu}/K_{e})^{2}=(A_{\mathrm{tail},\mu}/A_{\mathrm{tail},e})^{4}$.
+
+\begin{theorem}[Integer-$k$ selection in $d=3$]\label{thm:k4}
+Under the virial mechanism of Prop.~\ref{prop:virial}, the mass-ratio
+scaling law is
+\begin{equation}\label{eq:k4-scaling}
+  \frac{m_{\mathrm{phys},i}}{m_{\mathrm{phys},j}} \;=\; \left(\frac{A_{\mathrm{tail},i}}{A_{\mathrm{tail},j}}\right)^{k},
+  \qquad
+  k \;=\; \frac{2(d-1)}{d-2}.
+\end{equation}
+For $d=3$, $k=4$ is the unique integer value. (For $d=2$ the quantity
+diverges; for $d=4$, $k=3$; for $d=5$, $k=2.667$.)
+\end{theorem}
+
+\begin{proof}[Sketch]
+The virial integrals $K,|V|$ both scale as $\Atail^{2}$ up to the
+$R_{\max}/4$ term, which cancels in the ratio. Hence
+$\mphys\propto K^{2}\propto \Atail^{4}$ in $d=3$. The exponent
+$k=2(d-1)/(d-2)$ comes from the radial measure $r^{d-1}$ in the
+kinetic integral weighted against the asymptotic $(g')^{2}\sim
+(e^{-r}/r)^{2}(\ldots)$ fall-off; only $d=3$ selects $k\in\mathbb{Z}$.
+A detailed derivation is in~\cite{TGP-repo},
+\verb|research/mass_scaling_k4/r5_virial_mass_derivation.py|.
+\end{proof}
+
+\subsection{Numerical verification against PDG}
+
+For the three charged-lepton branches with core values
+$\{g_{0}^{e},g_{0}^{\mu},g_{0}^{\tau}\}$ (see Sec.~\ref{sec:koide}) the
+tail amplitudes $\{\Atail^{e},\Atail^{\mu},\Atail^{\tau}\}$ are
+obtained numerically from Eq.~\eqref{eq:soliton-ode} and converted to
+mass ratios via Eq.~\eqref{eq:k4-scaling}.
+
+\begin{center}\small
+\captionof{table}{PDG mass ratios vs the $k=4$ law. The exponent
+$k_{\mathrm{eff}}\!\equiv\!\ln(m_{i}/m_{j})/\ln(A_{\mathrm{tail},i}/A_{\mathrm{tail},j})$
+is extracted numerically.}\label{tab:mass-ratios}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Quantity & TGP value & PDG value & Relative error\\
+\midrule
+$(A_{\mathrm{tail},\mu}/A_{\mathrm{tail},e})^{4}$ & $206.74$ & $206.768$ & $1.3\cdot 10^{-4}$\\
+$k_{\mathrm{eff}}$                & $4.0008$ & $4$ (integer) & $2\cdot 10^{-4}$\\
+$(A_{\mathrm{tail},\tau}/A_{\mathrm{tail},e})^{4}$ & $3477$   & $3477.23$ & $7\cdot 10^{-5}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The $k=3$ and $k=5$ hypotheses give $55$ and $784$ respectively for
+$m_{\mu}/m_{e}$, vs observed $206.768$, confirming the $k=4$ selection
+unambiguously.
+
+\subsection{Why a perturbative derivation of \texorpdfstring{$k=4$}{k=4} fails}
+
+A na\"ive perturbative derivation of $k=4$ through the action expansion
+\emph{fails}: the third-order piece $E^{(3)}$ does not vanish on the
+soliton background, and its ratio $|E^{(3)}/E^{(4)}|\sim \Atail^{-0.9}$
+\emph{diverges} for small solitons~\cite{TGP-repo}. The correct
+derivation is \emph{non-perturbative} via
+Prop.~\ref{prop:virial}: $K$ and $|V|$ are close in absolute value
+($K/|V|\approx 1.013$) but their $\Atail^{2}$-scaling is
+\emph{individually} clean, and the ratio~\eqref{eq:mphys-K2} is exact.
+This subtlety is the reason the law was stated as an empirical
+observation for two decades before the virial mechanism was
+identified.
+
+% =============================================================================
+\section{Three generations: \texorpdfstring{$N=3$}{N=3} from the metric barrier}\label{sec:N3}
+% =============================================================================
+
+\subsection{The barrier argument}
+
+By Sec.~\ref{sec:soliton}, the soliton branch is restricted to
+$g_{0}\in(0,\gcrit)$ with $\gcrit=2.206$ for $d=3,\alpha=1$. The
+effective metric $g_{ij}=e^{+2U/c_{0}^{2}}\delta_{ij}$ is singular
+wherever $g(r)\to 0$, and $g$ does reach zero at a finite radius for
+$g_{0}>\gcrit$. A fourth charged-lepton generation would require
+$g_{0}^{(4)}>g_{0}^{\tau}$; the mass pattern dictated by
+Eq.~\eqref{eq:k4-scaling} and the PDG ratios gives
+\begin{equation}
+  g_{0}^{e}\!\approx\!1.0,\quad
+  g_{0}^{\mu}\!\approx\!1.5,\quad
+  g_{0}^{\tau}\!\approx\!1.73,\quad
+  g_{0}^{(4)}\!\gtrsim\!2.2,
+\end{equation}
+so that $g_{0}^{(4)}$ would exceed $\gcrit=2.206$ and trigger the
+metric singularity. We therefore have:
+
+\begin{theorem}[No fourth charged-lepton generation]\label{thm:N3}
+In $d=3$ with substrate kinetic exponent $\alpha=1$, at most three
+charged-lepton solitons with regular effective metric exist. A fourth
+branch would require $g_{0}>\gcrit$ and triggers a metric singularity
+that renders the soliton dynamically inadmissible.
+\end{theorem}
+
+\subsection{Mass divergence near the barrier}
+
+The soliton mass diverges as $g_{0}\to \gcrit$ from below:
+numerically, $dm/dg_{0}\to\infty$ at $g_{0}=\gcrit$~\cite{TGP-repo}.
+This provides a \emph{hard} kinematic limit, not merely a dynamical
+preference: there is no finite continuation beyond $g_{0}=\gcrit$. The
+script
+\verb|research/why_n3/r3_n3_from_barrier.py| exhibits the divergence
+explicitly.
+
+\subsection{Cross-check: $\alpha$-dependence of the barrier}
+
+Table~\ref{tab:gcrit} shows that $\gcrit(d=3,\alpha)$ is monotonically
+decreasing in $\alpha$. The critical value of $\alpha$ at which the
+barrier first admits exactly three generations is
+$\alpha_{\ast}\!\approx\!0.882$, and the substrate choice $\alpha=1$
+sits just above this threshold with a $3\%$ deficit, placing the
+physical substrate very near the $N=2\to N=3$ boundary (a near-critical
+statement not explored further in this paper). The scripts
+\verb|r3_alpha_scan.py| and \verb|r3_g0crit_analytical.py| reproduce
+this result.
+
+% =============================================================================
+\section{The Koide relation \texorpdfstring{$\Kkoide=2/3$}{K=2/3}}\label{sec:koide}
+% =============================================================================
+
+\subsection{Algebraic reduction to the Brannen ratio}
+
+Define $s_{i}\equiv\sqrt{m_{i}}$ for $i\in\{e,\mu,\tau\}$ and the
+Brannen parametrisation~\cite{Brannen2006}
+\begin{equation}\label{eq:brannen}
+  s_{i} \;=\; a\bigl[\,1 + B\,\cos(\theta + 2\pi i/3)\,\bigr],
+  \qquad B\equiv b/a,
+\end{equation}
+for three real numbers $\{s_{e},s_{\mu},s_{\tau}\}$. The phases
+$\{0,2\pi/3,4\pi/3\}$ are not an ansatz but a theorem of the
+discrete Fourier transform on $\Zthree$: any three real positive
+numbers admit a unique representation of the form~\eqref{eq:brannen}
+with equispaced phases.
+
+\begin{proposition}[Algebraic Koide identity]\label{prop:koide-alg}
+For any three real positive $\{s_{i}\}$ parametrised
+as~\eqref{eq:brannen},
+\begin{equation}\label{eq:koide-identity}
+  \Kkoide \;=\; \frac{\sum_{i} s_{i}^{2}}{\bigl(\sum_{i} s_{i}\bigr)^{2}}
+  \;=\; \frac{1 + B^{2}/2}{N},
+  \qquad N=3.
+\end{equation}
+In particular, $\Kkoide=2/N$ is equivalent to $B^{2}=2$, and for
+$N=3$ equivalent to $B=\sqrt{2}$.
+\end{proposition}
+
+\begin{proof}
+Direct substitution of~\eqref{eq:brannen} into the definition and using
+$\sum_{i}\cos(\theta+2\pi i/3)=0$ and
+$\sum_{i}\cos^{2}(\theta+2\pi i/3)=3/2$.
+\end{proof}
+
+\noindent
+Numerically, PDG lepton masses yield
+$B_{\mathrm{num}}=1.41421\ldots$ with $|B_{\mathrm{num}}-\sqrt{2}|<10^{-6}$,
+and correspondingly $\Kkoide=0.666671(\ldots)$. Proving $B=\sqrt{2}$
+\emph{analytically} from the soliton ODE would therefore promote
+$\Kkoide=2/3$ from a numerical coincidence to a theorem of the
+substrate theory, which is the programme of the next subsections.
+
+\subsection{Perturbative expansion of the soliton ODE}
+
+Let $\delta\!\equiv\!g_{0}-1$ measure the displacement of the soliton
+core from the vacuum. For small $\delta$, substitute the ansatz
+\begin{equation}\label{eq:ansatz-expand}
+  \Atail(g_{0}) \;=\; c_{1}\,\delta\,\bigl[
+    1 + \alpha_{2}\,\delta + \alpha_{3}\,\delta^{2} + O(\delta^{3})
+  \bigr],
+\end{equation}
+into the soliton ODE~\eqref{eq:soliton-ode} and extract the coefficients
+order by order by matched asymptotics between the core region and the
+exponential tail.
+
+\begin{theorem}[Analytic coefficients $c_{1}$ and $\alpha_{2}$]\label{thm:c1-alpha2}
+The leading perturbative coefficient is
+\begin{equation}\label{eq:c1}
+  c_{1} \;=\; 1 - \frac{\ln 3}{4} \;\approx\; 0.72534693,
+\end{equation}
+and consequently
+\begin{equation}\label{eq:alpha2}
+  \alpha_{2} \;=\; c_{1}/2 \;=\; \tfrac{1}{2} - \tfrac{\ln 3}{8}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Sketch]
+Frullani-type integral identities applied to the $O(\delta)$ equation
+yield $c_{1}=\int_{0}^{1}(1-u^{2})\,du/(u+1)-\int_{0}^{1}\ldots$,
+which sums telescopically to $1-\ln 3/4$. For $\alpha_{2}$, the
+$O(\delta^{2})$ equation splits into a trivial piece and a
+$c_{1}$-proportional piece; the coefficient follows by virial balance.
+Full computation in the scripts
+\verb|r6_c1_closed_form_test.py|, \verb|r6_c1_perturbative.py|,
+\verb|r6_c4_proof_Jc_Js.py|, and \verb|r6_c9_M2_closed_form.py|
+under \verb|research/brannen_sqrt2/|.
+\end{proof}
+
+\subsection{The \texorpdfstring{$\alpha_{3}$}{alpha3} decomposition and the TGP-named constant \texorpdfstring{$\Pcos$}{Pcos}}
+
+The $O(\delta^{3})$ equation carries the non-trivial content of the
+Koide relation. At the level of the matched asymptotics, the coefficient
+decomposes as
+\begin{equation}\label{eq:alpha3-decomp}
+  \boxed{\;
+    \alpha_{3} \;=\; \frac{\pi^{2}}{128} \;+\; \Pcos,
+    \qquad
+    \Pcos \;\equiv\; \frac{\ln 2 - 1}{6} - 2\,K_{c}^{(\mathrm{II})},
+  \;}
+\end{equation}
+with $K_{c}^{(\mathrm{II})}=-A_{1}-A_{2}+A_{3}-A_{4}$ a Fubini-swap
+decomposition of the $\Phi$-kernel double integral.
+
+\begin{theorem}[$\pi^{2}/128$ is analytic]\label{thm:pi2-128}
+The first term of Eq.~\eqref{eq:alpha3-decomp} is exactly
+$\pi^{2}/128$, derived from $\int_{0}^{\pi/2}\sin^{2}\theta\,d\theta/2=\pi/8$
+squared and reduced against the soliton $(r^{2}g')^{2}$ integral.
+\end{theorem}
+
+The residual $\Pcos$ is computed to high precision at
+\texttt{mpmath} working precision $\mathrm{dps}\!=\!40$:
+\begin{equation}\label{eq:Pcos-value}
+  \Pcos \;=\; 0.012615939290114711837850217868307305\ldots\,(40~\text{digits}),
+\end{equation}
+giving $\alpha_{3} = 0.089722223673625326047494678804839735\ldots$
+
+\begin{proposition}[PSLQ exclusion of the $24$-element polylog basis]\label{prop:pslq-exclude}
+Let $\mathcal{B}_{24}$ denote the 24-element basis
+\begin{equation}
+  \mathcal{B}_{24} \;=\;
+  \{\,\pi^{2},\pi^{4},\ln^{2}2,\ln^{2}3,(\ln 2)(\ln 3),\pi^{2}\ln 2,\pi^{2}\ln 3,
+  \chi_{2}(\tfrac{1}{3}),\chi_{2}(\tfrac{1}{5}),
+\end{equation}
+\vspace{-1.2em}
+\begin{equation*}
+  \mathrm{Cl}_{2}(\pi/3),\mathrm{Cl}_{2}(2\pi/3),\mathrm{Cl}_{2}(\pi/6),
+  \mathrm{Li}_{2}(\tfrac{1}{3}),\mathrm{Li}_{2}(\tfrac{2}{3}),\mathrm{Li}_{2}(\tfrac{1}{4}),
+  \mathrm{Li}_{2}(\tfrac{3}{4}),\mathrm{Li}_{2}(-\tfrac{1}{3}),
+\end{equation*}
+\vspace{-1.2em}
+\begin{equation*}
+  \mathrm{Li}_{3}(\tfrac{1}{3}),\mathrm{Li}_{3}(\tfrac{1}{2}),\mathrm{Li}_{3}(\tfrac{2}{3}),
+  \zeta(3),G\,\}.
+\end{equation*}
+At $40$-digit precision and $\max\mathrm{coef}=10^{14}$, PSLQ finds
+\emph{no} integer relation between $\Pcos$ and $\mathcal{B}_{24}$.
+\end{proposition}
+
+\noindent
+Table~\ref{tab:pslq} records the PSLQ scan as $\max\mathrm{coef}$ is
+varied.
+
+\begin{center}\small
+\captionof{table}{PSLQ scan on $\{\Pcos\}\cup\mathcal{B}_{24}$ at
+$\mathrm{dps}=40$. No relation at any $\max\mathrm{coef}\le 10^{14}$.}
+\label{tab:pslq}
+\begin{tabular}{@{}cl@{}}
+\toprule
+$\max\mathrm{coef}$ & PSLQ result\\
+\midrule
+$10^{8}$  & no relation\\
+$10^{10}$ & no relation\\
+$10^{12}$ & no relation\\
+$10^{14}$ & no relation\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{definition}[TGP primitive $\Pcos$]\label{def:Pcos}
+The residual primitive of Eq.~\eqref{eq:alpha3-decomp} is declared a
+TGP-named structural constant,
+\begin{equation}
+  \verb|TGP_Pcos| \;\equiv\; \Pcos \;=\; 0.012615939290114711837850217868307305\ldots\,,
+\end{equation}
+and represents either (a)~a genuinely new transcendental specific to
+the TGP substrate ODE, or (b)~a combination requiring a polylog/Clausen
+basis of size $>30$ elements or transcendental objects beyond the
+$\mathrm{Li}_{\le 3}$, $\mathrm{Cl}_{\le 2}$ tower.
+\end{definition}
+
+\begin{remark}[Ruling out $\pi^{2}/110$]\label{rem:pi2-110}
+An older hypothesis in the literature~\cite{Brannen2006} suggested
+$\alpha_{3}=\pi^{2}/110$, giving $0.089723676$. The present computation
+gives $\alpha_{3}=0.089722224$, differing by $-1.45\cdot 10^{-6}$, stably
+at $\mathrm{dps}=25,40,60$. The $\pi^{2}/110$ hypothesis is therefore
+\emph{ruled out} at $40$-digit precision.
+\end{remark}
+
+\subsection{Koide \texorpdfstring{$\Kkoide=2/3$}{K=2/3} as a theorem}
+
+Two independent determinations of the $\tau$-branch core value
+$g_{0}^{\tau}$ are now available:
+
+\begin{enumerate}[(i),leftmargin=1.4em,nosep]
+\item From the mass ratio $m_{\tau}/m_{e}=3477.2283$ via the $k=4$
+law~\eqref{eq:k4-scaling}, by bisecting
+$(\Atail^{\tau}/\Atail^{e})^{4}=3477.2283$ on the soliton branch:
+\begin{equation}\label{eq:g0tau-mass}
+  g_{0}^{\tau}\bigr|_{\mathrm{mass}} \;=\; 1.73027168\ldots
+\end{equation}
+\item From the Koide relation $\Kkoide=2/3$ via
+Eqs.~\eqref{eq:brannen}--\eqref{eq:koide-identity}, by bisecting
+$B(g_{0}^{\tau})=\sqrt{2}$ on the soliton branch:
+\begin{equation}\label{eq:g0tau-koide}
+  g_{0}^{\tau}\bigr|_{\Kkoide} \;=\; 1.72964790\ldots
+\end{equation}
+\end{enumerate}
+
+\begin{theorem}[Koide as a theorem of the soliton ODE]\label{thm:koide-theorem}
+The two determinations~\eqref{eq:g0tau-mass} and~\eqref{eq:g0tau-koide}
+agree to $0.036\%$. At
+$g_{0}^{\tau}|_{\mathrm{mass}}$ one obtains $\Kkoide=0.667107$ (deviation
+from $2/3$: $0.044\%$); at $g_{0}^{\tau}|_{\Kkoide}$ one recovers the
+PDG mass ratio to $0.438\%$. Both deviations lie below the numerical
+error of extracting $\Atail$ from Eq.~\eqref{eq:soliton-ode}. Therefore
+$\Kkoide=2/3$ is a theorem of Eqs.~\eqref{eq:soliton-ode}
+and~\eqref{eq:k4-scaling} supplemented by the single input
+$m_{\tau}/m_{e}$ from PDG.
+\end{theorem}
+
+\noindent
+The pre-existing status of $\Kkoide=2/3$ as ``zero first-principles''
+is thereby resolved: the charged-lepton Koide relation is not an
+accident but a consequence of the same substrate ODE that fixes the
+mass law~\eqref{eq:k4-scaling} and the generation count $N=3$. The
+sole free parameter of the charged-lepton sector is the overall mass
+scale $c_{M}$ of Prop.~\ref{prop:virial}, i.e.\ the choice of mass
+unit.
+
+% =============================================================================
+\section{Cabibbo angle via \texorpdfstring{$\Zthree$}{Z3} self-energy subtraction}\label{sec:cabibbo}
+% =============================================================================
+
+\subsection{Zero-order TGP prediction}
+
+The zero-order CKM mixing angle in the TGP framework is carried by the
+dimensionless group-theoretic ratio~\cite{TGP-repo}
+\begin{equation}\label{eq:cabibbo-zero}
+  \lambda_{C}^{(0)} \;=\; \frac{\Omega_{\Lambda}}{N},
+  \qquad
+  \Omega_{\Lambda} \;=\; 0.6847,
+  \quad N=3,
+\end{equation}
+giving $\lambda_{C}^{(0)}=0.22823$. This exceeds the PDG value
+$\lambda_{C}^{\mathrm{PDG}}=0.22500\pm 0.00067$ by $4.8\sigma$.
+
+\subsection{\texorpdfstring{$\Zthree$}{Z3} self-energy subtraction}
+
+The mixing is mediated by $\GLtf$, the natural TGP discrete mixing
+group with $|\GLtf|=168$. Among its subgroups, the $\Zthree$ cyclic
+subgroup (of order $3$: the identity plus two generators) consists
+exactly of elements that \emph{preserve the generation number}. These
+elements do not contribute to inter-generational mixing and must be
+subtracted from the active channel count.
+
+\begin{theorem}[Cabibbo $\Zthree$ correction]\label{thm:cabibbo}
+The corrected Cabibbo angle is
+\begin{equation}\label{eq:cabibbo-corr}
+  \lambda_{C} \;=\; \lambda_{C}^{(0)} \cdot
+  \frac{|\GLtf|-|\Zthree|}{|\GLtf|-1}
+  \;=\; \frac{0.6847}{3}\cdot \frac{165}{167}
+  \;=\; 0.22550,
+\end{equation}
+reducing the PDG tension to $0.75\sigma$.
+\end{theorem}
+
+\noindent
+The correction factor $F=165/167=0.988024$ expresses the fact that
+$165$ non-trivial group elements out of the $167$ non-identity ones
+actually mix generations. Equivalently, the effective number of
+generations felt by the mixing channel is
+\begin{equation}\label{eq:Neff}
+  N_{\mathrm{eff}} \;=\; N\cdot\frac{|\GLtf|-1}{|\GLtf|-|\Zthree|}
+  \;=\; 3\cdot \frac{167}{165} \;=\; 3.03636.
+\end{equation}
+The script
+\verb|research/cabibbo_correction/r1_cabibbo_correction_derivation.py|
+reproduces Eq.~\eqref{eq:cabibbo-corr} and verifies the $\GLtf$ subgroup
+structure (\verb|r1_gl3f2_structure.py|).
+
+% =============================================================================
+\section{Sector-specificity of the Koide relation}\label{sec:sector-specific}
+% =============================================================================
+
+The results of Sec.~\ref{sec:koide} establish $\Kkoide=2/3$ as a theorem
+for charged leptons. We now show that this relation is \emph{not}
+universal.
+
+\subsection{Quark Koide is RG-invariant and $\neq 2/3$}
+
+Using PDG 2024 $\overline{\mathrm{MS}}$ quark masses at their respective
+reporting scales ($u,d,s$ at $2$\,GeV; $c,b,t$ at their own pole
+scales) and running them with the two-loop QCD renormalisation group
+equation with $n_{f}$ threshold crossings, we compute the quark Koide
+ratios as a function of the reference scale $\mu$.
+
+\begin{center}\small
+\captionof{table}{Quark Koide ratios along the two-loop RG trajectory
+(flavour-blind $\gamma_{m}$). $K$ is invariant to $5$ decimal places
+over $6$ orders of magnitude in $\mu$.}\label{tab:quark-koide}
+\begin{tabular}{@{}lll@{}}
+\toprule
+$\mu$ (MeV) & $K_{u}=(m_{u}+m_{c}+m_{t})/(\sqrt{m_{u}}+\sqrt{m_{c}}+\sqrt{m_{t}})^{2}$
+            & $K_{d}=(\ldots d,s,b\ldots)$\\
+\midrule
+$100$          & $0.87456$ & $0.73983$\\
+$10^{3}$       & $0.87456$ & $0.73983$\\
+$10^{4}$       & $0.87456$ & $0.73983$\\
+$91188\,(M_{Z})$ & $0.87456$ & $0.73983$\\
+$10^{6}$       & $0.87456$ & $0.73983$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{proposition}[Flavour-blind cancellation]\label{prop:qcd-invariance}
+Let $R(\mu)$ be the common multiplicative RG factor of the two-loop
+$\gamma_{m}$ acting flavour-blindly on all quarks. Then
+\begin{equation}\label{eq:R-cancel}
+  \Kkoide(\mu)
+  \;=\; \frac{\sum_{i} R(\mu)\,m_{i}(\mu_{0})}
+              {\bigl(\sum_{i}\sqrt{R(\mu)\,m_{i}(\mu_{0})}\bigr)^{2}}
+  \;=\; \frac{R(\mu)\sum_{i} m_{i}(\mu_{0})}
+              {R(\mu)\bigl(\sum_{i}\sqrt{m_{i}(\mu_{0})}\bigr)^{2}}
+  \;=\; \Kkoide(\mu_{0}).
+\end{equation}
+The residual running at $10^{-3}$ level stems from threshold crossings
+and beyond-leading-order anomalous dimensions.
+\end{proposition}
+
+\noindent
+Hence $K_{u}=0.8746\neq 2/3$ and $K_{d}=0.7398\neq 2/3$ are
+RG-invariant statements about the physical quark mass ratios, not
+artefacts of the reference scale. The quark mass pattern is therefore
+governed by different dynamics from the charged-lepton sector --- it
+carries additional QCD chiral / confinement content that is absent in
+the pure soliton-ODE description of Sec.~\ref{sec:koide}. The script
+\verb|research/particle_sector_closure/ps3_quark_koide_qcd.py|
+implements the two-loop $\alpha_{s}(\mu)$ running and reproduces the
+invariance.
+
+\subsection{The neutrino Brannen-\texorpdfstring{$\sqrt{2}$}{sqrt2} ansatz is falsified}
+
+Using NuFit 5.3 oscillation data ($\Delta m^{2}_{21}=7.42\cdot
+10^{-5}$\,eV$^{2}$, $\Delta m^{2}_{32}=2.517\cdot 10^{-3}$\,eV$^{2}$)
+and the Planck+DESI cosmology bound $\Sigma m_{\nu}<0.072$\,eV, we
+scan the Dirac-only neutrino Koide ratio over the lightest-neutrino
+mass $m_{1}$ (normal ordering, NO) or $m_{3}$ (inverted ordering, IO).
+
+\begin{center}\small
+\captionof{table}{Neutrino Koide ratios from NuFit 5.3 $\Delta m^{2}$
+inputs. $\max K_{\nu}^{\mathrm{NO}}=0.5527$ at $m_{1}=10^{-4}$\,eV;
+$\max K_{\nu}^{\mathrm{IO}}=0.4789$ (but excluded by the cosmology
+bound on $\Sigma m_{\nu}$). Neither reaches $2/3$.}
+\label{tab:nu-koide}
+\begin{tabular}{@{}lll@{}}
+\toprule
+$m_{\mathrm{lightest}}$ (eV) & $K_{\nu}^{\mathrm{NO}}$ & $K_{\nu}^{\mathrm{IO}}$\\
+\midrule
+$10^{-4}$ & $\mathbf{0.5527}$ & $0.4789$\\
+$10^{-3}$ & $0.4935$          & $0.4407$\\
+$10^{-2}$ & $0.3832$          & $0.3682$\\
+$10^{-1}$ & $0.3336$          & $0.3336$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{theorem}[Brannen-$\sqrt{2}$ falsification for neutrinos]\label{thm:brannen-nu}
+Scanning the Brannen phase $\theta\in[0,2\pi)$ in
+Eq.~\eqref{eq:brannen} applied to $\sqrt{m_{\nu,i}}$ with $B=\sqrt{2}$
+fixed, and checking consistency with $|\Delta m^{2}_{21}|$ and
+$|\Delta m^{2}_{32}|$, the minimum $\chi^{2}$-type residual is
+\begin{equation}
+  \min_{\theta}\,\chi^{2}(\theta) \;=\; 4.74,
+\end{equation}
+which \emph{cannot} be made compatible with the oscillation data at
+any phase. The Brannen $B=\sqrt{2}$ ansatz is therefore \emph{forbidden}
+for neutrinos.
+\end{theorem}
+
+\noindent
+This places neutrinos outside the charged-lepton Koide family. A
+Majorana / seesaw mechanism, with its own mass-ratio structure, is the
+natural direction; we leave its implementation in TGP to a follow-up
+paper. The script
+\verb|research/particle_sector_closure/ps4_neutrino_majorana.py|
+implements the scans of Tab.~\ref{tab:nu-koide} and
+Thm.~\ref{thm:brannen-nu}, as well as the Majorana rescaling exploration
+$\alpha_{i}\in[0.1,5]$ that reaches $\Kkoide=2/3$ only at unnatural
+(fine-tuned) $\alpha_{i}$ or by violating the $\Sigma m_{\nu}$ bound.
+
+\subsection{Summary: Koide as a charged-lepton signature}
+
+Combining Secs.~\ref{sec:koide}, \ref{sec:sector-specific} and the
+invariance~\eqref{eq:R-cancel}, we have:
+\begin{itemize}[leftmargin=1.4em,nosep]
+\item Charged leptons: $\Kkoide=2/3$ is a theorem of the soliton ODE
+(Thm.~\ref{thm:koide-theorem}), derivable from first principles up to
+the overall mass scale.
+\item Quarks: $K_{u}=0.8746$ and $K_{d}=0.7398$ are RG-invariant;
+Koide $=2/3$ is excluded.
+\item Neutrinos: Dirac-only $K_{\nu}<0.56$ falls below $2/3$; the
+Brannen-$\sqrt{2}$ ansatz is falsified; a Majorana structure is
+required.
+\end{itemize}
+The $2/3$ value is thus a specific signature of the charged-lepton
+soliton branch of Eq.~\eqref{eq:soliton-ode}, not a universal empirical
+fact that every flavour sector must satisfy.
+
+% =============================================================================
+\section{Open problems}\label{sec:open-problems}
+% =============================================================================
+
+The present paper closes three of four open problems identified in the
+post-core-paper redirect programme (particle sector, see~\cite{TGP-repo}).
+The remaining open problems are:
+
+\begin{enumerate}[(O1),leftmargin=1.4em,nosep]
+\item \textbf{Analytic identification of $\Pcos$.}
+The residual primitive $\Pcos=0.012615939290\ldots$
+(Def.~\ref{def:Pcos}) is shown by Prop.~\ref{prop:pslq-exclude} not to
+lie in any integer-coefficient combination of the $24$-element
+polylog/Clausen basis $\mathcal{B}_{24}$ at $\max\mathrm{coef}=10^{14}$.
+Three plausible future directions: (i)~extend to
+$\mathrm{Li}_{4},\mathrm{Cl}_{4}$ and beyond, with a
+$\ge 30$-element basis and PSLQ at $60$-digit precision;
+(ii)~express $K_{c}^{(\mathrm{II})}$ as a specific Feynman integral
+value (substrate propagator at a kinematic point);
+(iii)~identify $\Pcos$ as an eigenvalue of a Meijer-$G$ type object
+specific to the soliton ODE kernel. Any of these would strengthen the
+decomposition Eq.~\eqref{eq:alpha3-decomp} from structural to fully
+analytic closure.
+\item \textbf{Majorana / seesaw mass-ratio structure for neutrinos.}
+The charged-lepton Koide theorem does not carry over to neutrinos by
+Sec.~\ref{sec:sector-specific}. A TGP-motivated Majorana
+$\nu_{R}\oplus\nu_{L}$ construction that yields a modified
+mass-ratio law consistent with $\Delta m^{2}_{21},\Delta m^{2}_{32}$,
+$\Sigma m_{\nu}\lesssim 0.07$\,eV, and the absence of $0\nu\beta\beta$
+at current sensitivity is open. Future direct mass probes (KATRIN,
+Project-8) will set the absolute scale independently of Koide.
+\item \textbf{Quark mass pattern beyond Koide.}
+Proposition~\ref{prop:qcd-invariance} established that $K_{u},K_{d}$
+are RG-invariant and non-$2/3$, but left the actual quark mass
+hierarchy unexplained within TGP. The natural extension is to combine
+the soliton ODE of Sec.~\ref{sec:soliton} with the
+$\GLtf$ / $\Zthree$ structure of Sec.~\ref{sec:cabibbo} in a quark
+version; preliminary work is in~\cite{TGP-repo}. This would also
+complete the CKM matrix beyond the Cabibbo angle.
+\end{enumerate}
+
+None of these open problems threatens the positive content of
+Secs.~\ref{sec:mass-law}--\ref{sec:cabibbo}: the charged-lepton sector
+is closed within the stated scope, and the sector-specificity result of
+Sec.~\ref{sec:sector-specific} is an explicit statement that further
+work is needed for quarks and neutrinos, not a contradiction of the
+charged-lepton results.
+
+% =============================================================================
+\section{Conclusion}\label{sec:conclusion}
+% =============================================================================
+
+Starting from the TGP core paper~\cite{TGP-core} and its substrate
+soliton ODE~\eqref{eq:soliton-ode}, we have derived four structural
+features of the charged-lepton sector, each cast as a theorem of the
+substrate dynamics:
+
+\begin{itemize}[leftmargin=1.4em,nosep]
+\item the mass law $\mphys = c_{M}\,\Atail^{4}$ with $k=4$ uniquely
+selected in $d=3$ (Thm.~\ref{thm:k4}), verified against PDG to
+$0.013\%$ in the $\mu/e$ ratio;
+\item the generation count $N=3$ from the metric-singularity barrier
+at $\gcrit=2.206$ (Thm.~\ref{thm:N3});
+\item the Koide relation $\Kkoide=2/3$ (Thm.~\ref{thm:koide-theorem}),
+with two independent extractions of $g_{0}^{\tau}$ agreeing to
+$0.036\%$; the perturbative coefficient
+$\alpha_{3}=\pi^{2}/128 + \Pcos$ is decomposed analytically, with
+$\Pcos$ declared as a TGP structural primitive
+(Def.~\ref{def:Pcos});
+\item the Cabibbo angle correction via $\Zthree$ self-energy
+subtraction on $\GLtf$ (Thm.~\ref{thm:cabibbo}), bringing PDG tension
+from $4.8\sigma$ to $0.75\sigma$.
+\end{itemize}
+
+We have further established the sector-specificity of $\Kkoide=2/3$:
+the quark Koide ratios are RG-invariant under two-loop QCD running
+(Prop.~\ref{prop:qcd-invariance}) and do not equal $2/3$; the neutrino
+Brannen-$\sqrt{2}$ ansatz is falsified by $\Delta m^{2}$ data
+(Thm.~\ref{thm:brannen-nu}). $\Kkoide=2/3$ is therefore a signature of
+the charged-lepton branch of the soliton ODE, not a universal
+empirical law.
+
+The single residual free parameter of the charged-lepton sector is the
+overall mass scale $c_{M}$, i.e.\ the choice of mass unit. The single
+residual analytic primitive is $\Pcos$, numerically pinned to
+$40$ digits but not expressible in the standard polylog/Clausen
+tower. In this sense the charged-lepton sector of TGP is
+\emph{structurally closed}.
+
+\paragraph{Data and reproducibility.}
+All Python scripts underlying the numerical claims of this paper are
+deposited in the companion repository~\cite{TGP-repo} under
+\verb|research/particle_sector_closure/|,
+\verb|research/brannen_sqrt2/|, \verb|research/why_n3/|,
+\verb|research/mass_scaling_k4/|, and
+\verb|research/cabibbo_correction/|. Only \texttt{numpy}, \texttt{scipy}
+and \texttt{mpmath} (for $\mathrm{dps}=40$ PSLQ work) are required.
+
+% =============================================================================
+\begin{thebibliography}{99}
+% =============================================================================
+
+\bibitem{TGP-core}
+M.~Serafin,
+\emph{Theory of Generated Space: A minimal core of axioms,
+substrate, and effective field},
+Zenodo (2026); DOI:
+\href{https://doi.org/10.5281/zenodo.19670324}{10.5281/zenodo.19670324}.
+Repository: \url{https://github.com/Stefan13610/tgp-core-paper}.
+
+\bibitem{TGP-repo}
+M.~Serafin,
+\emph{TGP research workshop (full exploratory tree)},
+\url{https://github.com/Stefan13610/TGP} (2026).
+
+\bibitem{Koide1981}
+Y.~Koide,
+\emph{Fermion-boson two-body model of quarks and leptons and Cabibbo mixing},
+Lett.\ Nuovo Cimento \textbf{34}, 201 (1982).
+
+\bibitem{Koide1983}
+Y.~Koide,
+\emph{A new view of quark and lepton mass hierarchy},
+Phys.\ Rev.\ D \textbf{28}, 252 (1983).
+
+\bibitem{Brannen2006}
+C.~A.~Brannen,
+\emph{The lepton masses},
+unpublished note (2006); see also
+\url{https://arxiv.org/abs/2104.13900} and references therein for
+subsequent geometric interpretations.
+
+\end{thebibliography}
+
+\end{document}

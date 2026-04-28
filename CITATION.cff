@@ -1,0 +1,55 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it using the metadata below."
+type: software
+title: >-
+  Theory of Generated Space — Particle-sector closure: a TGP-structured
+  derivation of charged-lepton masses, the Koide relation, and the Cabibbo angle
+abstract: >-
+  Preprint and supporting numerical material for the TGP particle-sector
+  closure paper, a companion to the TGP core paper. From the same soliton ODE
+  the paper derives the charged-lepton mass law m_n = c_M * A_tail,n^4
+  (m_mu/m_e = 206.77 vs PDG 206.768, 0.001 % post-Phase-3 audit refresh
+  2026-04-28), the Koide relation K = 2/3 as a theorem of the Brannen ratio
+  B = sqrt(2), the integer N = 3 generation count from a metric-singularity
+  barrier, and the Cabibbo angle via Z3 self-energy subtraction on GL(3,F2)
+  reducing PDG tension from 4.8 sigma to 0.75 sigma.
+authors:
+  - family-names: Serafin
+    given-names: Mateusz
+    affiliation: Independent researcher
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.19706861
+    description: Zenodo DOI of this work
+  - type: doi
+    value: 10.5281/zenodo.19670324
+    description: TGP core paper (prerequisite)
+license: CC-BY-4.0
+keywords:
+  - charged leptons
+  - Koide relation
+  - Cabibbo angle
+  - lepton mass formula
+  - soliton
+  - generated space
+  - TGP
+  - scalar field
+  - Brannen
+  - GL(3,F2)
+  - PSLQ
+  - theoretical physics
+url: "https://doi.org/10.5281/zenodo.19706861"
+repository-code: "https://github.com/Stefan13610/tgp-leptons-paper"
+references:
+  - type: article
+    title: "Theory of Generated Space: A minimal core of axioms, substrate, and effective field"
+    doi: 10.5281/zenodo.19670324
+    authors:
+      - family-names: Serafin
+        given-names: Mateusz
+  - type: software
+    title: "TGP — full research workshop"
+    url: "https://github.com/Stefan13610/TGP"
+    authors:
+      - family-names: Serafin
+        given-names: Mateusz

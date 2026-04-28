@@ -25,7 +25,9 @@ $P_{\cos}$ in $\alpha_3$ is declared and bounded.
 
 **Headline numerical results** (verified, see `research/`):
 
-- Mass ratio $m_\mu/m_e = (A_\mu/A_e)^4 = 206.74$ vs PDG $206.768$ — **0.013 %**.
+- Mass ratio $m_\mu/m_e = (A_\mu/A_e)^4 = 206.77$ vs PDG $206.768$ — **0.001 %**
+  (post-Phase-3 audit refresh, 2026-04-28; see
+  [`research/POST_PHASE3_NOTE_2026-04-28.md`](research/POST_PHASE3_NOTE_2026-04-28.md)).
 - Koide $K = 2/3$ derived: $g_0^\tau$ from mass matches $g_0^\tau$ from
   Koide to within **0.036 %** (1.73027 vs 1.72965).
 - $B = \sqrt{2}$ holds to $|B_{\text{num}} - \sqrt 2| < 10^{-6}$ over
@@ -152,7 +154,7 @@ python research/cabibbo_correction/r1_cabibbo_correction_derivation.py
 2. **Substrate soliton and the mass law.**
    Derivation of $m = c_M\,A_{\text{tail}}^4$ from the virial
    $m_{\text{phys}} = c\,K^2$ mechanism; uniqueness of $k=4$ in $d=3$;
-   numerical verification $m_\mu/m_e = 206.74$ (0.013 % vs PDG).
+   numerical verification $m_\mu/m_e = 206.77$ (0.001 % vs PDG, post-Phase-3 audit refresh).
 3. **$N=3$ generations from metric-singularity barrier.**
    $g_0^{\text{crit}}(d=3,\alpha=1) = 2.206$; $g_0^\tau < g_0^{\text{crit}}$;
    fourth generation forbidden by mass divergence.
@@ -195,6 +197,37 @@ This repository is a deliberately narrow slice:
 
 That is where development happens. This repository is the stable,
 paper-aligned snapshot for the particle-sector closure only.
+
+## Audit trail (post-Phase 3)
+
+The deposit at DOI [10.5281/zenodo.19706861](https://doi.org/10.5281/zenodo.19706861)
+is the immutable timestamped record. Subsequent in-repo audit material:
+
+- [`research/POST_PHASE3_NOTE_2026-04-28.md`](research/POST_PHASE3_NOTE_2026-04-28.md)
+  — 2026-04-28 deep-scan audit trail. One numerical micro-fix landed:
+  $r_{21} = (A_\mu/A_e)^4 = 206.77$ (drift $1\cdot 10^{-5}$, was $206.74$ /
+  $1.3\cdot 10^{-4}$). **No theorem, no proof, no conclusion changed.**
+  PDG anchor (206.768), Koide $K = 2/3$, $N=3$ generation count, k=4
+  selection, and the Cabibbo angle derivation are untouched.
+
+## Falsification entry points
+
+The full prediction registry — falsification target, experimental horizon,
+DOI of the flask that pre-registered each prediction — lives in the workshop
+master at
+[`TGP_v1/PREDICTIONS_REGISTRY.md`](https://github.com/Stefan13610/TGP/blob/main/TGP_v1/PREDICTIONS_REGISTRY.md).
+
+Quick pointer to the predictions sourced from this paper (Sector 6 — Particle / lepton sector):
+
+- **L1**: $r_{21} = (A_\mu/A_e)^4 = 206.77$ vs PDG 206.768 — **TESTED-PASS** at 0.001 %
+- **L2**: $r_{31} = (A_\tau/A_e)^4 = 3477$ vs PDG 3477.23 — **TESTED-PASS** at $7\cdot 10^{-5}$
+- **L3**: $k_\text{eff} = 4.0008$ (k=4 integer selection in $d=3$) — **LOCKED** by Thm. `thm:k4`
+- **L4**: $K_\text{koide} = 2/3$ sympy-exact — **LOCKED** by Thm. `thm:koide-theorem`
+  (two independent extractions of $g_0^\tau$ agree to 0.036 %)
+- **L5**: $N = 3$ generations from metric-singularity barrier $g_0^\text{crit} = 2.206$
+  — **LOCKED** by Thm. `thm:N3`
+- **Cabibbo angle**: $\lambda_C = (0.6847/3)\cdot 165/167 = 0.22550$ vs PDG 0.22500
+  — **TESTED-PASS** at 0.75 σ
 
 ## Citation
 
